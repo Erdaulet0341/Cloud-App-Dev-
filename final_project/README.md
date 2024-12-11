@@ -6,11 +6,12 @@ Welcome to the Django Application! This guide will walk you through setting up a
 
 Make sure you have the following installed on your system:
 
-- Python (version 3.7 or higher)
-- pip (Python package manager)
-- virtualenv (optional, but recommended)
+- Python (version 3.7 or higher, for local setup)
+- pip (Python package manager, for local setup)
+- virtualenv (optional, but recommended, for local setup)
+- Docker (for Docker-based setup)
 
-## Getting Started
+## Local Setup
 
 Follow the steps below to get the project up and running.
 
@@ -58,3 +59,61 @@ python manage.py runserver
 ```
 
 The application will be accessible at `http://127.0.0.1:8000`.
+
+
+Here’s an updated version of your README file, including instructions on working with Docker to run your Django project:
+
+---
+
+## Docker Setup
+
+Follow these steps to build and run the project using Docker.
+
+### 1. Build the Docker Image
+
+In the project root directory (where the `Dockerfile` is located), build the Docker image:
+
+```bash
+docker build -t django-app .
+```
+
+### 2. Run the Docker Container
+
+Run the container and expose the application on port 8000:
+
+```bash
+docker run -p 8000:8000 django-app
+```
+
+### 3. Access the Application
+
+The application will be accessible at `http://127.0.0.1:8000`.
+
+---
+
+## Notes on Docker
+
+- The `Dockerfile` in this project sets up the environment, installs dependencies, and prepares the Django application for production using Gunicorn as the WSGI server.
+- The `start.sh` script handles the following:
+  1. Migrating the database (`python manage.py migrate`).
+  2. Collecting static files (`python manage.py collectstatic`).
+  3. Starting the application using Gunicorn.
+
+---
+
+## Running Management Commands Inside Docker
+
+To execute Django management commands within the Docker container, use the following format:
+
+```bash
+docker exec -it <container_id_or_name> python manage.py <command>
+```
+
+For example, to create a superuser:
+
+```bash
+docker exec -it django-app-container python manage.py createsuperuser
+```
+
+Replace `<container_id_or_name>` with the actual container ID or name.
+
